@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 0 10px; /* Add some padding to the container */
+        }
+
+        .form-box {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px; /* Space between boxes */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s; /* Animation properties */
+            flex: 1 1 300px; /* Flexible box with a minimum width of 300px */
+            max-width: 350px; /* Maximum width for larger screens */
+        }
+
+        .form-box:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-box input[type="text"], 
+        .form-box input[type="file"] {
+            width: 100%; /* Full width */
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensure padding is included in width */
+        }
+
+        .form-box button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Animation for button */
+        }
+
+        .form-box button:hover {
+            background-color: #45a049;
+        }
+
+        /* Loading overlay styles */
+        #loading {
+            display: none; /* Hidden by default */
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #loading .spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate Your QR Code</h1>
+    <div class="form-container">
+        <!-- Box for Link QR -->
+        <div class="form-box">
+            <h2>Generate QR for Link</h2>
+            <form action="/generate-link" method="POST" onsubmit="showLoading()">
+                <input type="text" name="link" placeholder="Enter a URL" required>
+                <button type="submit">Generate QR</button>
+            </form>
+        </div>
+
+        <!-- Box for Text QR -->
+        <div class="form-box">
+            <h2>Generate QR for Text</h2>
+            <form action="/generate-text" method="POST" onsubmit="showLoading()">
+                <input type="text" name="text" placeholder="Enter some text" required>
+                <button type="submit">Generate QR</button>
+            </form>
+        </div>
+
+        <!-- Box for PDF QR -->
+        <div class="form-box">
+            <h2>Generate QR for PDF</h2>
+            <form action="/generate-pdf" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+                <input type="file" name="pdf_file" accept=".pdf" required>
+                <button type="submit">Generate QR</button>
+            </form>
+        </div>
+
+        <!-- Box for Contact Information QR -->
+        <div class="form-box">
+            <h2>Generate QR for Contact Information</h2>
+            <form action="/generate-contact" method="POST" onsubmit="showLoading()">
+                <input type="text" name="name" placeholder="Enter Name" required>
+                <input type="text" name="contact1" placeholder="Enter Contact 1" required>
+                <input type="text" name="contact2" placeholder="Add Another Contact (Optional)">
+                <input type="text" name="call_time" placeholder="Preferred Call Time (Optional)">
+                <button type="submit">Generate QR</button>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>
