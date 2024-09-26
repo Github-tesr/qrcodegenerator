@@ -72,34 +72,34 @@
             background-color: #45a049;
         }
 
-        /* Loading overlay styles */
-        #loading {
-            display: none; /* Hidden by default */
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+        /* Error message styles */
+        .error {
+            color: red;
+            font-size: 0.9em;
         }
 
-        #loading .spinner {
-            border: 8px solid #f3f3f3; /* Light grey */
-            border-top: 8px solid #3498db; /* Blue */
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* File size limit information styles */
+        .file-size-limit {
+            font-size: 0.9em;
+            color: #555;
         }
     </style>
+    <script>
+        function validatePDFSize(input) {
+            const maxSize = 5 * 1024 * 1024; // 5 MB
+            const file = input.files[0];
+            const errorMessage = document.getElementById('pdf-error');
+
+            if (file) {
+                if (file.size > maxSize) {
+                    errorMessage.textContent = "File size exceeds 5 MB limit.";
+                    input.value = ""; // Clear the input
+                } else {
+                    errorMessage.textContent = ""; // Clear the error message
+                }
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Generate Your QR Code</h1>
@@ -126,7 +126,9 @@
         <div class="form-box">
             <h2>Generate QR for PDF</h2>
             <form action="/generate-pdf" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
-                <input type="file" name="pdf_file" accept=".pdf" required>
+                <input type="file" name="pdf_file" accept=".pdf" required onchange="validatePDFSize(this)">
+                <div id="pdf-error" class="error"></div> <!-- Error message for PDF size -->
+                <div class="file-size-limit">Maximum file size: 5 MB</div> <!-- Size limit note -->
                 <button type="submit">Generate QR</button>
             </form>
         </div>
@@ -143,6 +145,5 @@
             </form>
         </div>
     </div>
-    
 </body>
 </html>
